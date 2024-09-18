@@ -1,0 +1,4 @@
+abc	1 l
+a	1 l
+aa	2 l
+c	1 l
