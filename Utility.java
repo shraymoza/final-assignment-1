@@ -25,6 +25,15 @@ public class Utility {
            if(!Utility.isNullOrEmpty(Float.toString(finalValue))&& finalValue>initialValue){
                float inflation= ((finalValue-initialValue)/initialValue);
                inflationMap.put(sizeList.get(1).name + " " + sizeList.get(1).size, inflation);
+           }else if(Utility.isNullOrEmpty(Float.toString(finalValue))){
+               for(List<Product> sizeList2: availableSizeLists){
+                   if(Utility.convertSizeInMetrics(sizeList2.get(1).size)<Utility.convertSizeInMetrics(sizeList.get(1).size)){
+                       double finalValue2= sizeList2.get(1).cost/Utility.convertSizeInMetrics(sizeList2.get(1).size);
+                       double initialValue2= sizeList.get(0).cost/Utility.convertSizeInMetrics(sizeList.get(0).size);
+                       float inflationForDiscontrinued= (float) ((finalValue2-initialValue2)/initialValue2);
+                       inflationMap.put(sizeList.get(1).name + " " + sizeList.get(1).size, inflationForDiscontrinued);
+                   }
+               }
            }
         }
         return inflationMap;

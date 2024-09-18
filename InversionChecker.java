@@ -56,7 +56,6 @@ public class InversionChecker {
                 }
             }
         }
-
         // returning the list of strings of inverted quantities
         return inversions;
     }

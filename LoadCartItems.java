@@ -43,7 +43,7 @@ public class LoadCartItems {
                     System.out.println("Incomplete Cart details");
                     return -1;
                 }
-                // Handling Excessive Product parameters
+                // Handling Excessive Cart parameters
                 else if (parts.length > 2) {
                     System.out.println("Too many fields");
                     return -1;
@@ -60,7 +60,6 @@ public class LoadCartItems {
                             if(Utility.convertSizeInMetrics(item.size)==Utility.convertSizeInMetrics(cartItem.size)&& item.name.equals(cartItem.name)){
                                     System.out.println("Duplicate items");
                                     return -1;
-
                             }else if(item.size.equals(cartItem.size) && item.name.equals(cartItem.name)){
                                 System.out.println("Duplicate items");
                                 return -1;

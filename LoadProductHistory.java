@@ -58,7 +58,7 @@ public class LoadProductHistory {
                     String size = parts[2];
                     float cost = Float.parseFloat(parts[3]);
 
-                    // add product to product history in case of correct values
+                    // add product to product history in case of correct product parameter values
                     if (Utility.checkProductCostCorrectness(String.valueOf(cost)) &&
                             Utility.checkProductDateCorrectness(date) &&
                             Utility.checkProductNameCorrectness(name) &&
