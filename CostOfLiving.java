@@ -10,36 +10,21 @@ import java.util.Map;
 public class CostOfLiving {
     private final Map<String, List<Product>> productHistory = new HashMap<>();
     private final Map<Integer, List<CartItem>> shoppingCarts = new HashMap<>();
-    private int cartCounter = 0;
 
 
     public int loadProductHistory(BufferedReader productStream) {
-            int productInventoryCount=0;
-            LoadProductHistory loadProductHistory= new LoadProductHistory(productHistory);
-            productInventoryCount = loadProductHistory.loadProducts(productStream);
-            return productInventoryCount;
+        int productInventoryCount = 0;
+        LoadProductHistory loadProductHistory = new LoadProductHistory(productHistory);
+        productInventoryCount = loadProductHistory.loadProducts(productStream);
+        return productInventoryCount;
     }
 
 
     public int loadShoppingCart(BufferedReader cartStream) {
-        try {
-            List<CartItem> cartItems = new ArrayList<>();
-            String line;
-            while ((line = cartStream.readLine()) != null) {
-                String[] parts = line.split("\t");
-                String name = parts[0];
-                String size = parts[1];
-
-                CartItem cartItem = new CartItem(name, size);
-                cartItems.add(cartItem);
-                System.out.println("Purchased product: " + name + " of size " + size);
-            }
-            shoppingCarts.put(++cartCounter, cartItems);
-            return cartCounter;
-        } catch (IOException e) {
-            System.out.println("Error loading cart, Kindly check the cart values.");
-            return -1;
-        }
+        int cart_number = -1;
+        LoadCartItems loadCart = new LoadCartItems(shoppingCarts);
+        cart_number = loadCart.loadCartItems(cartStream);
+        return cart_number;
     }
 
 
@@ -56,8 +41,8 @@ public class CostOfLiving {
         // for each cart item we try to find the cheapest possible value we can buy using cartCostCalculator method
         for (CartItem cartItem : cartItems) {
             CartCostChecker checker = new CartCostChecker(productHistory, cartItem);
-            minCost = checker.cartCostCalculator(year,month);
-            totalCost+=minCost;
+            minCost = checker.cartCostCalculator(year, month);
+            totalCost += minCost;
         }
         return totalCost;
     }
@@ -78,8 +63,8 @@ public class CostOfLiving {
         Map<String, Float> inflationMap;
         // create a object of inflationChecker class setting the product history
         InflationChecker checkInflation = new InflationChecker(productHistory);
-         // inflationChecker method returns a list of strings containing inflated prices
-        inflationMap = checkInflation.inflationChecker( startYear, startMonth, endYear, endMonth );
+        // inflationChecker method returns a list of strings containing inflated prices
+        inflationMap = checkInflation.inflationChecker(startYear, startMonth, endYear, endMonth);
         return inflationMap;
     }
 }

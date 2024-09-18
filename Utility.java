@@ -1,10 +1,5 @@
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Utility {
 
@@ -160,6 +155,64 @@ public class Utility {
 
     public static boolean isBlank(String str) {
         return str == "";
+    }
+
+    //method to check correctness of name string
+    static boolean checkProductNameCorrectness(String name) {
+        if (Utility.isNullOrEmpty(name.trim())) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    //method to check correctness of size string
+    static boolean checkProductSizeCorrectness(String size) {
+        String[] units = {"kg", "km", "kl", "g", "l", "m", "ml", "mg", "mm", "lb", "ft"};
+        if (size.contains(" ")) {
+            // Checking if product contains null or empty values
+            if (Utility.isNullOrEmpty(size.trim())) {
+                System.out.println(" Blank or empty values for product parameters not allowed");
+                return false;
+            }
+            // Handling zero and negative quantities.
+            else if (Float.parseFloat(size.split(" ")[0]) <= 0) {
+                System.out.println("Negative and Zero quantities not allowed.");
+                return false;
+            }
+            // Handling incorrect units.
+            else if (!Arrays.asList(units).contains(size.split(" ")[1])) {
+                System.out.println("Invalid Units");
+                return false;
+            }else {
+                return true;
+            }
+        } else {
+            // handling missing separator
+            System.out.println("Size missing space separator");
+            return false;
+        }
+    }
+
+    //method to check correctness of date string
+    static boolean checkProductDateCorrectness(String date) {
+        if (Utility.isNullOrEmpty(date.trim())) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    //method to check correctness of cost string
+    static boolean checkProductCostCorrectness(String cost) {
+        if (Float.parseFloat(cost) < 0.00) {
+            System.out.println("Negative quantities not allowed.");
+            return false;
+        }else if (Utility.isBlank(cost.trim())) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
 }
