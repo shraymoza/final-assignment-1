@@ -19,14 +19,14 @@ public class A1 {
 
             CostOfLiving costOfLiving = new CostOfLiving();
 
-            costOfLiving.loadProductHistory(productList);
+            //costOfLiving.loadProductHistory(productList);
             int cartId = costOfLiving.loadShoppingCart(productCart);
 
             float cost = costOfLiving.shoppingCartCost(cartId, 2024, 12);
 
             var inflation = costOfLiving.inflation(1997, 1, 2024, 12);
 
-            var inversion = costOfLiving.priceInversion(2024, 12, 5);
+            var inversion = costOfLiving.priceInversion(2024, 12, 0);
 
             System.out.println("Shopping cart cost: " + cost);
 

@@ -15,6 +15,11 @@ public class InflationChecker {
 
     // function to find the Price Inversion at any point in time based on Year and Month and Tolerance
     public Map<String,Float> inflationChecker(int startYear, int startMonth, int endYear, int endMonth) {
+        // checking if dates are valid
+        if(startYear<=0||endYear<=0||endMonth>12||endMonth<1||startMonth>12||startMonth<1){
+            System.out.println("Invalid dates");
+            return null;
+        }
         Map<String, Float> inflationMap = new HashMap<>();
         // create a string called initial date based on year and month input
         String initialDate= startYear +"/"+ startMonth +"/"+"1";

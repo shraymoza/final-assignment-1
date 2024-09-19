@@ -3,6 +3,7 @@ import java.util.*;
 
 public class Utility {
 
+    // this function is used to convert any given quantity into metrics
     static double convertSizeInMetrics(String size) {
         String[] sizeParts = size.split(" ");
         double quantity = Double.parseDouble(sizeParts[0]);
@@ -17,6 +18,8 @@ public class Utility {
             default -> throw new IllegalArgumentException("Unknown unit: " + unit);
         };
     }
+
+    // function used to calculate inflation
     public static Map<String, Float> calculateInflation(List<List<Product>> availableSizeLists){
         Map<String, Float> inflationMap = new HashMap<>();
         for(List<Product> sizeList: availableSizeLists){
@@ -39,6 +42,7 @@ public class Utility {
         return inflationMap;
     }
 
+    // finds the most economical product from the available quantities of a product
     public static Product getLowestCostPerUnitProduct(List<Product> mostRecentFilteredSizes) {
         if (Utility.isNullOrEmpty(Integer.toString(mostRecentFilteredSizes.size()))) {
             return null;
@@ -60,6 +64,7 @@ public class Utility {
         return lowestCostProduct;
     }
 
+    //checks if the recent entry of a quantity was discontinued based on their zero cost to filter them out
     public static List<Product> removeDiscontinuedProducts(List<List<Product>> availableSizeLists){
         List<Product> availableProducts = new ArrayList<>();
         for (List<Product> sizeList : availableSizeLists) {
@@ -71,6 +76,7 @@ public class Utility {
         return availableProducts;
     }
 
+    // returns the oldest and most recent product from the inflation lists that can be used to calculate the inflation
     public static List<List<Product>> initialFinalProductList(List<List<Product>> availableSizeLists){
         List<List<Product>> finalAvailableSizeLists = new ArrayList<>();
         for (List<Product> sizeList : availableSizeLists) {
@@ -84,6 +90,7 @@ public class Utility {
         return finalAvailableSizeLists;
     }
 
+    // Function used to return the list of list of products where the lists are filtered up to a final dates
     public static List<List<Product>> getDateFilteredLists(List<List<Product>> availableSizeLists, String finalDates) {
         List<List<Product>> finalAvailableSizeLists = new ArrayList<>();
         for (List<Product> sizeList : availableSizeLists) {
@@ -110,6 +117,7 @@ public class Utility {
         return finalAvailableSizeLists;
     }
 
+    // Function used to return the list of list of products where the lists are filtered based on the initial and final dates
     public static List<List<Product>> getDateFilteredInflationLists(List<List<Product>> availableSizeLists, String finalDates,String initialDate) {
         List<List<Product>> finalAvailableSizeLists = new ArrayList<>();
         for (List<Product> sizeList : availableSizeLists) {
@@ -146,6 +154,7 @@ public class Utility {
         return finalAvailableSizeLists;
     }
 
+    // function used to create list of list of products for a specific cart item Product name based on their sizes. this also sorts the lists based on their dates
     public static List<List<Product>> getAvailableSizesLists(List<Product> products) {
         Map<String, List<Product>> sizeMap = new HashMap<>();
 
@@ -157,17 +166,18 @@ public class Utility {
         }
         return new ArrayList<>(sizeMap.values());
     }
-
+    // function to check null , zero or empty values
     public static boolean isNullOrEmpty(String str) {
         return str == null ||str == "null" || str.isEmpty() || str.equals("0") || str.equals("0.0") || str.equals("-1");
     }
-
+    // function to check blank values
     public static boolean isBlank(String str) {
         return str == "";
     }
 
     //method to check correctness of name string
     static boolean checkProductNameCorrectness(String name) {
+        // check for blank spaces
         if (Utility.isNullOrEmpty(name.trim())) {
             return false;
         } else {
@@ -179,7 +189,7 @@ public class Utility {
     static boolean checkProductSizeCorrectness(String size) {
         String[] units = {"kg", "km", "kl", "g", "l", "m", "ml", "mg", "mm", "lb", "ft"};
         if (size.contains(" ")) {
-            // Checking if product contains null or empty values
+            // Checking if product contains null or empty values.
             if (Utility.isNullOrEmpty(size.trim())) {
                 System.out.println(" Blank or empty values for product parameters not allowed");
                 return false;
@@ -205,6 +215,7 @@ public class Utility {
 
     //method to check correctness of date string
     static boolean checkProductDateCorrectness(String date) {
+        // check for blank spaces
         if (Utility.isNullOrEmpty(date.trim())) {
             return false;
         } else {
@@ -214,10 +225,13 @@ public class Utility {
 
     //method to check correctness of cost string
     static boolean checkProductCostCorrectness(String cost) {
+        //return -1 if cost is less than 0
         if (Float.parseFloat(cost) < 0.00) {
             System.out.println("Negative quantities not allowed.");
             return false;
-        }else if (Utility.isBlank(cost.trim())) {
+        }
+        // check for blank spaces
+        else if (Utility.isBlank(cost.trim())) {
             return false;
         } else {
             return true;

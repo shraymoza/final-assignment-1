@@ -42,7 +42,11 @@ public class CostOfLiving {
         for (CartItem cartItem : cartItems) {
             CartCostChecker checker = new CartCostChecker(productHistory, cartItem);
             minCost = checker.cartCostCalculator(year, month);
-            totalCost += minCost;
+            if(minCost==-1){
+                return -1;
+            }else {
+                totalCost += minCost;
+            }
         }
         return totalCost;
     }

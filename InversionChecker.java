@@ -14,6 +14,11 @@ public class InversionChecker {
 
     // function to find the Price Inversion at any point in time based on Year and Month and Tolerance
     public List<String> inversionChecker(int year, int month, int tolerance) {
+        // checking if dates are valid
+        if(year<=0||month>12||month<1||tolerance<=0){
+            System.out.println("Invalid input values");
+            return null;
+        }
         List<String> inversions = new ArrayList<>();
         // create a string called final date based on year and month input
         String finalDate= year +"/"+ month +"/"+"1";
@@ -45,7 +50,7 @@ public class InversionChecker {
 
                     // Check if larger product cost is higher than smaller product cost per unit and calculate the difference
                     if (largerCostPerUnit > smallerCostPerUnit) {
-                        double percentageDifference = (largerCostPerUnit - smallerCostPerUnit) / largerCostPerUnit * 100;
+                        double percentageDifference = ((largerCostPerUnit - smallerCostPerUnit) / largerCostPerUnit) * 100;
 
                         //check if tolerance is lower than the difference
                         if (percentageDifference > tolerance) {
