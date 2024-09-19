@@ -1,42 +1,37 @@
-
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.StringReader;
+import java.util.Scanner;
 
 public class A1 {
     public static void main(String[] args) {
         try {
+            // Create a Scanner object
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("Enter product history file name: ");
+            // Read product history file name
+            String productHistory = scanner.next();
+            System.out.print("Enter cart items file name: ");
+            // Read cart file name
+            String cartItems = scanner.next();
             BufferedReader productList = new BufferedReader(
-            		new FileReader(
-            				"products.txt"
-            				));
+                    new FileReader(
+                            productHistory
+                    ));
             BufferedReader productCart = new BufferedReader(
-            		new FileReader(
-            				"cart.txt"
-            				));
-
+                    new FileReader(
+                            cartItems
+                    ));
+            //create a object of CostOfLiving class
             CostOfLiving costOfLiving = new CostOfLiving();
 
+            //Load products in cart. Returns count of loaded products.
             costOfLiving.loadProductHistory(productList);
+            //Load cart items. Returns cart number.
             int cartId = costOfLiving.loadShoppingCart(productCart);
 
-            float cost = costOfLiving.shoppingCartCost(cartId, 2024, 12);
-
-            var inflation = costOfLiving.inflation(1997, 1, 2024, 12);
-
-            var inversion = costOfLiving.priceInversion(2024, 12, 1);
-
-            System.out.println("Shopping cart cost: " + cost);
-
-            System.out.println("Inflation Map: " + inflation);
-
-            System.out.println("Inversion List: " + inversion);
-
-
         } catch (IOException e) {
-        	System.out.println("Error loading products, Please try again");
+            System.out.println("Error loading products, Please try again");
         }
     }
 }

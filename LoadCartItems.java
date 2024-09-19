@@ -55,16 +55,20 @@ public class LoadCartItems {
                     if (Utility.checkProductNameCorrectness(name) &&
                             Utility.checkProductSizeCorrectness(size)) {
                         CartItem cartItem = new CartItem(name, size);
-                        //checking if cart item already exists in added items
+                        //checking if item already exists in added items
                         for(CartItem item:cartItems){
+                            // checking if item exists in cart with same quantity in different units and same name
                             if(Utility.convertSizeInMetrics(item.size)==Utility.convertSizeInMetrics(cartItem.size)&& item.name.equals(cartItem.name)){
                                     System.out.println("Duplicate items");
                                     return -1;
-                            }else if(item.size.equals(cartItem.size) && item.name.equals(cartItem.name)){
+                            }
+                            // checking if item exists in cart with same quantity and same name
+                            else if(item.size.equals(cartItem.size) && item.name.equals(cartItem.name)){
                                 System.out.println("Duplicate items");
                                 return -1;
                             }
                         }
+                        //adding item to cart
                         cartItems.add(cartItem);
                         System.out.println("Purchased product: " + name + " of size " + size);
                     }else {
@@ -72,6 +76,7 @@ public class LoadCartItems {
                     }
                 }
             }
+            // add items to cart and return cart number using cart counter variable.
             shoppingCarts.put(++cartCounter, cartItems);
             return cartCounter;
         } catch (IOException e) {
