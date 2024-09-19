@@ -22,6 +22,10 @@ public class InversionChecker {
         List<String> inversions = new ArrayList<>();
         // create a string called final date based on year and month input
         String finalDate= year +"/"+ month +"/"+"1";
+        //checking if product history or products for a specific item are null
+        if (productHistory == null||productHistory.isEmpty()) {
+            return null;
+        }
         for (String productName : productHistory.keySet()) {
             List<Product> products = productHistory.get(productName);
             List<List<Product>> availableSizesLists,dateFilteredLists;
@@ -38,7 +42,9 @@ public class InversionChecker {
 
             // Sort the filtered products by size using the Utility class
             mostRecentFilteredSizes.sort(Comparator.comparing(product -> Utility.convertSizeInMetrics(product.size)));
-
+            if(mostRecentFilteredSizes.size()<=1){
+                return null;
+            }
             // Check for price inversions using nested loops for each of the available quantities for a product
             for (int i = 0; i < mostRecentFilteredSizes.size(); i++) {
                 Product smallerProduct = mostRecentFilteredSizes.get(i);
