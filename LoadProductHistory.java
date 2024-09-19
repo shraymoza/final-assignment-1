@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
@@ -16,6 +15,7 @@ public class LoadProductHistory {
 
 
     public int loadProducts(BufferedReader productStream) {
+        // Clearing product history each time this function gets called to create a new history
         productHistory.clear();
         try {
             // Check to handle if product history is null
@@ -79,9 +79,10 @@ public class LoadProductHistory {
                 System.out.println("Empty product history stream");
                 return 0;
             }
-            // returning Size in case of non empty inventory
+            // returning Size in case of non-empty inventory
             else {
                 System.out.println("Inventory size: " + productHistory.values().stream().mapToInt(List::size).sum());
+                // returning the current product count in product history
                 return productHistory.values().stream().mapToInt(List::size).sum();
             }
         } catch (IOException | NumberFormatException e) {

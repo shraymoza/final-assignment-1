@@ -8,7 +8,7 @@ public class Utility {
         String[] sizeParts = size.split(" ");
         double quantity = Double.parseDouble(sizeParts[0]);
         String unit = sizeParts[1];
-
+        // using the metric scale we are using the units metre, litre and gram as base quantity and all other quantities will be scaled on them.
         return switch (unit) {
             case "kg", "km", "kl" -> quantity * 1000;
             case "g", "l", "m" -> quantity;
@@ -23,12 +23,16 @@ public class Utility {
     public static Map<String, Float> calculateInflation(List<List<Product>> availableSizeLists){
         Map<String, Float> inflationMap = new HashMap<>();
         for(List<Product> sizeList: availableSizeLists){
+            // availableSizeLists contains oldest and most recent size of a product in the given date range
             float initialValue= sizeList.get(0).cost;
             float finalValue= sizeList.get(1).cost;
+            //calculating inflation when final value is greater than initial value
            if(!Utility.isNullOrEmpty(Float.toString(finalValue))&& finalValue>initialValue){
                float inflation= ((finalValue-initialValue)/initialValue);
                inflationMap.put(sizeList.get(1).name + " " + sizeList.get(1).size, inflation);
-           }else if(Utility.isNullOrEmpty(Float.toString(finalValue))){
+           }
+           // in case product discontinued we calculate using another quantity smaller than discontinued one
+           else if(Utility.isNullOrEmpty(Float.toString(finalValue))){
                for(List<Product> sizeList2: availableSizeLists){
                    if(Utility.convertSizeInMetrics(sizeList2.get(1).size)<Utility.convertSizeInMetrics(sizeList.get(1).size)){
                        double finalValue2= sizeList2.get(1).cost/Utility.convertSizeInMetrics(sizeList2.get(1).size);
@@ -41,17 +45,19 @@ public class Utility {
                }
            }
         }
+        //returning the inflation map
         return inflationMap;
     }
 
     // finds the most economical product from the available quantities of a product
     public static Product getLowestCostPerUnitProduct(List<Product> mostRecentFilteredSizes) {
+        //check if list is empty or null
         if (Utility.isNullOrEmpty(Integer.toString(mostRecentFilteredSizes.size()))) {
             return null;
         }
         Product lowestCostProduct = mostRecentFilteredSizes.get(0);
         double lowestCostPerUnit = lowestCostProduct.cost / Utility.convertSizeInMetrics(lowestCostProduct.size);
-
+        // running a loop to find the product size at any point of time with the least cost per quantity
         for (Product product : mostRecentFilteredSizes) {
             double size = Utility.convertSizeInMetrics(product.size);
             double costPerUnit = product.cost / size;
@@ -62,7 +68,7 @@ public class Utility {
                 lowestCostPerUnit = costPerUnit;
             }
         }
-
+        // returning the product with the lowest cost per unit
         return lowestCostProduct;
     }
 
@@ -71,10 +77,12 @@ public class Utility {
         List<Product> availableProducts = new ArrayList<>();
         for (List<Product> sizeList : availableSizeLists) {
             Product lastElement=sizeList.get(sizeList.size() - 1);
+            //check if last element is zero to count it as discontinued
             if(!Utility.isNullOrEmpty(Float.toString(lastElement.cost))) {
                 availableProducts.add(lastElement);
             }
         }
+        //return the final lists
         return availableProducts;
     }
 
@@ -101,6 +109,7 @@ public class Utility {
         for (List<Product> sizeList : availableSizeLists) {
             List<Product> finalSizeLists= new ArrayList<>();
             for(Product product: sizeList){
+                //extracting the year, month and date from final dates
                 String[] pDateParts = product.date.split("/");
                 int productYear = Integer.parseInt(pDateParts[0]);
                 int productMonth = Integer.parseInt(pDateParts[1]);
@@ -109,6 +118,7 @@ public class Utility {
                 int finalYear = Integer.parseInt(fDateParts[0]);
                 int finalMonth = Integer.parseInt(fDateParts[1]);
                 int finalDate = Integer.parseInt(fDateParts[2]);
+                // Filtering the lists if the product in product history falls before the final date
                 if(productYear<finalYear||
                         (productYear==finalYear&&productMonth<finalMonth)||
                         (productYear==finalYear&&productMonth==finalMonth && productDate==finalDate)){
@@ -119,6 +129,7 @@ public class Utility {
                 finalAvailableSizeLists.add(finalSizeLists);
             }
         }
+        //return the filtered size lists
         return finalAvailableSizeLists;
     }
 
@@ -128,6 +139,7 @@ public class Utility {
         for (List<Product> sizeList : availableSizeLists) {
             List<Product> finalSizeLists= new ArrayList<>();
             for(Product product: sizeList){
+                //extracting the year, month and date from initial date and final dates
                 String[] pDateParts = product.date.split("/");
                 int productYear = Integer.parseInt(pDateParts[0]);
                 int productMonth = Integer.parseInt(pDateParts[1]);
@@ -140,6 +152,7 @@ public class Utility {
                 int startYear = Integer.parseInt(iDateParts[0]);
                 int startMonth = Integer.parseInt(iDateParts[1]);
                 int startDate = Integer.parseInt(iDateParts[2]);
+                // Filtering the lists if the product in product history falls in the initial and final date range
                 if(productYear>=startYear){
                     if(productMonth>=startMonth){
                         if(productDate>=startDate){
@@ -156,25 +169,30 @@ public class Utility {
                 finalAvailableSizeLists.add(finalSizeLists);
             }
         }
+        //return the filtered size lists
         return finalAvailableSizeLists;
     }
 
     // function used to create list of list of products for a specific cart item Product name based on their sizes. this also sorts the lists based on their dates
     public static List<List<Product>> getAvailableSizesLists(List<Product> products) {
         Map<String, List<Product>> sizeMap = new HashMap<>();
-
+        //creating list of a product based on its available sizes
         for (Product product : products) {
             sizeMap.computeIfAbsent(Double.toString(convertSizeInMetrics(product.size)), k -> new ArrayList<>()).add(product);
         }
+        //sorting the size lists based on their dates
         for (List<Product> productList : sizeMap.values()) {
             productList.sort(Comparator.comparing(p -> p.date));
         }
+        // Return a list containing lists of product sizes sorted on basis of their date
         return new ArrayList<>(sizeMap.values());
     }
+
     // function to check null , zero or empty values
     public static boolean isNullOrEmpty(String str) {
         return str == null || str.equals("null") || str.isEmpty() || str.equals("0") || str.equals("0.0") || str.equals("-1");
     }
+
     // function to check blank values
     public static boolean isBlank(String str) {
         return Objects.equals(str, "");
