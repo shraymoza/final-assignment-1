@@ -14,15 +14,17 @@ public class A1 {
             System.out.print("Enter cart items file name: ");
             // Read cart file name
             String cartItems = scanner.next();
+            // read the product history file
             BufferedReader productList = new BufferedReader(
                     new FileReader(
                             productHistory
                     ));
+            //read the cart items file
             BufferedReader productCart = new BufferedReader(
                     new FileReader(
                             cartItems
                     ));
-            //create a object of CostOfLiving class
+            //create an object of CostOfLiving class
             CostOfLiving costOfLiving = new CostOfLiving();
 
             //Load products in cart. Returns count of loaded products.
