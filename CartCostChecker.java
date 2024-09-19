@@ -26,7 +26,9 @@ public class CartCostChecker {
         List<Product> products = productHistory.get(cartItem.name);
 
         //checking if product history or products for a specific item are null
-        if (productHistory == null && productHistory.isEmpty()) {
+        if (productHistory == null) {
+            return -1;
+        }else if(productHistory.isEmpty()){
             return -1;
         }
         if (products == null ) {

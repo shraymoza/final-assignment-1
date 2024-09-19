@@ -173,21 +173,17 @@ public class Utility {
     }
     // function to check null , zero or empty values
     public static boolean isNullOrEmpty(String str) {
-        return str == null ||str == "null" || str.isEmpty() || str.equals("0") || str.equals("0.0") || str.equals("-1");
+        return str == null || str.equals("null") || str.isEmpty() || str.equals("0") || str.equals("0.0") || str.equals("-1");
     }
     // function to check blank values
     public static boolean isBlank(String str) {
-        return str == "";
+        return Objects.equals(str, "");
     }
 
     //method to check correctness of name string
     static boolean checkProductNameCorrectness(String name) {
         // check for blank spaces
-        if (Utility.isNullOrEmpty(name.trim())) {
-            return false;
-        } else {
-            return true;
-        }
+        return !Utility.isNullOrEmpty(name.trim());
     }
 
     //method to check correctness of size string
@@ -221,11 +217,7 @@ public class Utility {
     //method to check correctness of date string
     static boolean checkProductDateCorrectness(String date) {
         // check for blank spaces
-        if (Utility.isNullOrEmpty(date.trim())) {
-            return false;
-        } else {
-            return true;
-        }
+        return !Utility.isNullOrEmpty(date.trim());
     }
 
     //method to check correctness of cost string
