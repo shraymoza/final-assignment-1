@@ -33,8 +33,10 @@ public class Utility {
                    if(Utility.convertSizeInMetrics(sizeList2.get(1).size)<Utility.convertSizeInMetrics(sizeList.get(1).size)){
                        double finalValue2= sizeList2.get(1).cost/Utility.convertSizeInMetrics(sizeList2.get(1).size);
                        double initialValue2= sizeList.get(0).cost/Utility.convertSizeInMetrics(sizeList.get(0).size);
-                       float inflationForDiscontrinued= (float) ((finalValue2-initialValue2)/initialValue2);
-                       inflationMap.put(sizeList.get(1).name + " " + sizeList.get(1).size, inflationForDiscontrinued);
+                       if(finalValue2>initialValue2){
+                           float inflationForDiscontrinued = (float) ((finalValue2 - initialValue2) / initialValue2);
+                           inflationMap.put(sizeList.get(1).name + " " + sizeList.get(1).size, inflationForDiscontrinued);
+                       }
                    }
                }
            }
@@ -81,6 +83,9 @@ public class Utility {
         List<List<Product>> finalAvailableSizeLists = new ArrayList<>();
         for (List<Product> sizeList : availableSizeLists) {
             List<Product> finalSizeLists= new ArrayList<>();
+            if(sizeList.size()<2){
+                return null;
+            }
             Product startElement=sizeList.get(0);
             Product lastElement=sizeList.get(sizeList.size() - 1);
             finalSizeLists.add(startElement);

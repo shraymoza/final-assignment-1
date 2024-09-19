@@ -16,8 +16,14 @@ public class InflationChecker {
     // function to find the Price Inversion at any point in time based on Year and Month and Tolerance
     public Map<String,Float> inflationChecker(int startYear, int startMonth, int endYear, int endMonth) {
         // checking if dates are valid
-        if(startYear<=0||endYear<=0||endMonth>12||endMonth<1||startMonth>12||startMonth<1){
+        if (startYear <= 0 || endYear <= 0 || endMonth > 12 || endMonth < 1 ||
+                startMonth > 12 || startMonth < 1 || startYear > endYear ||
+                (startYear == endYear && startMonth >= endMonth)) {
             System.out.println("Invalid dates");
+            return null;
+        }
+        //checking if product history or products for a specific item are null
+        if (productHistory == null||productHistory.isEmpty()) {
             return null;
         }
         Map<String, Float> inflationMap = new HashMap<>();
@@ -39,9 +45,14 @@ public class InflationChecker {
             // return a list of available product sizes on start date and end date
             mostRecentFilteredSizes = Utility.initialFinalProductList(dateFilteredLists);
 
+            //check if there are any products available to calculate inversion
+            if(mostRecentFilteredSizes==null){
+                continue;
+            }else if(mostRecentFilteredSizes.size()<=1){
+                continue;
+            }
             //calculate inflation per quantity of product
             inflationMap.putAll(Utility.calculateInflation(mostRecentFilteredSizes));
-            //System.out.println(inflationMap);
         }
 
         // returning the list of strings of inverted quantities

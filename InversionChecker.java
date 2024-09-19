@@ -42,7 +42,10 @@ public class InversionChecker {
 
             // Sort the filtered products by size using the Utility class
             mostRecentFilteredSizes.sort(Comparator.comparing(product -> Utility.convertSizeInMetrics(product.size)));
-            if(mostRecentFilteredSizes.size()<=1){
+            //check if there are any products available to calculate inversion
+            if(mostRecentFilteredSizes==null){
+                return null;
+            }else if(mostRecentFilteredSizes.size()<=1){
                 return null;
             }
             // Check for price inversions using nested loops for each of the available quantities for a product
@@ -61,7 +64,6 @@ public class InversionChecker {
                         //check if tolerance is lower than the difference
                         if (percentageDifference > tolerance) {
                             inversions.add(productName + "\t" + largerProduct.size + "\t" + smallerProduct.size);
-                            System.out.print(productName + "\t" + largerProduct.size + "\t" + smallerProduct.size+"\n");
                         }
                     }
                 }

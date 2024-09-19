@@ -54,7 +54,7 @@ public class LoadProductHistory {
                 // Handling Product parameters when they are 4 in total
                 else {
                     String date = (parts[0]);
-                    String name = parts[1];
+                    String name = Utility.checkProductNameCorrectness(parts[1])?parts[1].toLowerCase():parts[1];
                     String size = parts[2];
                     float cost = Float.parseFloat(parts[3]);
 
